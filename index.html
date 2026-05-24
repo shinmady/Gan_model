@@ -85,11 +85,11 @@
             
             <div class="architecture-grid">
                 <div class="card" style="border-left-color: #ef4444;">
-                    <h3>🎨 生成器 (Generator)</h3>
+                    <h3>生成器 (Generator)</h3>
                     <p>負責接收隨機雜訊，並嘗試將其轉換為有意義的數據。目標是「騙過」判別器。</p>
                 </div>
                 <div class="card" style="border-left-color: #22c55e;">
-                    <h3>🕵️ 判別器 (Discriminator)</h3>
+                    <h3>判別器 (Discriminator)</h3>
                     <p>負責接收真實數據與生成器的假數據，並判定數據的真偽。目標是「揪出」所有生成的贗品。</p>
                 </div>
             </div>
@@ -98,54 +98,7 @@
         <!-- 實作區塊 -->
         <section id="implementation">
             <h2>實作</h2>
-            <p>以下是一個極簡版的 GAN 架構，用於生成手寫數字（基於 MNIST 資料集）。我們定義了最基礎的線性層（Linear）來建構這兩個網路。</p>
             
-            <pre><code class="language-python">
-import torch
-import torch.nn as nn
-
-# 1. 定義生成器 (Generator)
-class Generator(nn.Module):
-    def __init__(self, latent_dim=100, img_shape=784):
-        super().__init__()
-        self.model = nn.Sequential(
-            nn.Linear(latent_dim, 256),
-            nn.LeakyReLU(0.2),
-            nn.Linear(256, 512),
-            nn.LeakyReLU(0.2),
-            nn.Linear(512, img_shape),
-            nn.Tanh() # 輸出範圍縮放到 [-1, 1]
-        )
-
-    def forward(self, z):
-        return self.model(z)
-
-# 2. 定義判別器 (Discriminator)
-class Discriminator(nn.Module):
-    def __init__(self, img_shape=784):
-        super().__init__()
-        self.model = nn.Sequential(
-            nn.Linear(img_shape, 512),
-            nn.LeakyReLU(0.2),
-            nn.Linear(512, 256),
-            nn.LeakyReLU(0.2),
-            nn.Linear(256, 1),
-            nn.Sigmoid() # 輸出 0~1 的機率值 (真/偽)
-        )
-
-    def forward(self, img):
-        return self.model(img)
-
-# 初始化模型
-generator = Generator()
-discriminator = Discriminator()
-print("模型初始化完成！")
-            </code></pre>
-        </section>
-    </div>
-
     <!-- 引入 Prism.js 程式碼高亮 JS -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
-</body>
+    </body>
 </html>
