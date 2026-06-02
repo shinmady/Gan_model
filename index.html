@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GAN</title>
+    <title>111316007鄭聿宸Gan_Model</title>
     <!-- 引入 Google 字體 -->
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700&family=Fira+Code:wght@400;600&display=swap" rel="stylesheet">
     <!-- 引入 Prism.js 程式碼高亮 CSS -->
@@ -73,8 +73,8 @@
 <body>
 
     <header>
-        <h1>Generative Adversarial Network</h1>
-        <p>介紹</p>
+        <h1>111316007鄭聿宸Gan_Model</h1>
+        <p>Generative Adversarial Network 介紹</p>
     </header>
 
     <div class="container">
@@ -97,8 +97,48 @@
 
         <!-- 實作區塊 -->
         <section id="implementation">
-            <h2>實作</h2>
-            
+            <h2>2. 實作範例 (PyTorch)</h2>
+            <p>以下是一個基於 PyTorch 的簡單 GAN 架構示範，展示了生成器與判別器的基礎模型定義：</p>
+            <pre><code class="language-python">import torch
+import torch.nn as nn
+
+# 定義生成器 (Generator)
+class Generator(nn.Module):
+    def __init__(self, latent_dim):
+        super(Generator, self).__init__()
+        self.model = nn.Sequential(
+            nn.Linear(latent_dim, 128),
+            nn.LeakyReLU(0.2),
+            nn.Linear(128, 256),
+            nn.BatchNorm1d(256),
+            nn.LeakyReLU(0.2),
+            nn.Linear(256, 784),
+            nn.Tanh() # 輸出範圍至 [-1, 1]
+        )
+
+    def forward(self, z):
+        return self.model(z)
+
+# 定義判別器 (Discriminator)
+class Discriminator(nn.Module):
+    def __init__(self):
+        super(Discriminator, self).__init__()
+        self.model = nn.Sequential(
+            nn.Linear(784, 256),
+            nn.LeakyReLU(0.2),
+            nn.Linear(256, 128),
+            nn.LeakyReLU(0.2),
+            nn.Linear(128, 1),
+            nn.Sigmoid() # 輸出為真偽的機率值 [0, 1]
+        )
+
+    def forward(self, img):
+        return self.model(img)</code></pre>
+        </section>
+    </div>
+
     <!-- 引入 Prism.js 程式碼高亮 JS -->
-    </body>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+</body>
 </html>
