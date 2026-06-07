@@ -132,8 +132,8 @@
     <div class="container">
         <!-- 簡介區塊 -->
         <section id="intro">
-            <h2>1. 什麼是 GAN？</h2>
-            <p>生成對抗網路（GAN）由 Ian Goodfellow 於 2014 年提出。它的核心思想是讓生成器與判別器進行零和博弈，在不斷對抗的過程中共同進化，最終讓 AI 學會生成逼真的數據。</p>
+            <h2>項目一、演算法介紹 (什麼是 GAN？)</h2>
+            <p>生成對抗網路（GAN）由 Ian Goodfellow 於 2014 年提出。<strong>它主要為了解決「資料不足」或「缺乏創造力」的問題</strong>，能夠從無到有生成極度逼真的影像、聲音或文字。它的核心思想是讓生成器與判別器進行零和博弈，在不斷對抗的過程中共同進化，最終讓 AI 學會生成逼真的數據。</p>
             
             <div class="architecture-grid">
                 <div class="card" style="border-left-color: #ef4444;">
@@ -163,9 +163,56 @@
             </div>
         </section>
 
+        <!-- AI 輔助學習紀錄區塊 -->
+        <section id="ai-learning" style="margin-top: 3rem;">
+            <h2>項目二、AI 輔助學習紀錄</h2>
+            <p>在實作本專案的過程中，我利用了 AI 助手來協助釐清艱澀的演算法概念，並指導我如何將 Python 模型轉換為網頁視覺化。</p>
+            <div style="overflow-x: auto;">
+                <table style="width: 100%; border-collapse: collapse; margin-top: 1rem; background: white; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); border-radius: 8px; overflow: hidden;">
+                    <thead style="background: #1e293b; color: white;">
+                        <tr>
+                            <th style="padding: 1rem; text-align: left;">我問了 AI 什麼問題</th>
+                            <th style="padding: 1rem; text-align: left;">AI 回答重點摘要</th>
+                            <th style="padding: 1rem; text-align: left;">如何幫助我理解</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr style="border-bottom: 1px solid #e2e8f0;">
+                            <td style="padding: 1rem;">為什麼生成器一開始必須輸入「隨機雜訊」，而不是空白圖片？</td>
+                            <td style="padding: 1rem;">AI 解釋如果輸入固定圖片，生成器只會產出單一結果。隨機雜訊（Latent Vector）能提供「多樣性」，讓模型學習將不同的雜訊映射成具有不同特徵（如筆跡、粗細）的數字。</td>
+                            <td style="padding: 1rem;">解開了對「無中生有」的疑惑，原來雜訊就像靈感種子，是確保模型能生成多樣化、不重複結果的關鍵。</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid #e2e8f0;">
+                            <td style="padding: 1rem;">判別器到底是如何判斷一張圖片是真是假？</td>
+                            <td style="padding: 1rem;">AI 說明判別器本質上是一個二元分類器，它會分析圖片的紋理、邊緣等特徵，藉由同時觀察真圖與假圖，不斷修正神經網路權重來找出兩者在像素特徵上的差異。</td>
+                            <td style="padding: 1rem;">讓我了解判別器並不是單純死背整張圖片的樣子，而是像鑑識專家一樣，學習辨識細微的高維度特徵。</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 1rem;">為什麼訓練時 D loss 和 G loss 加起來不等於 1？</td>
+                            <td style="padding: 1rem;">AI 解釋這兩個數值是「二元交叉熵誤差(BCE Loss)」，不是機率。因為 G 和 D 的「考試題目」和基準點不同，所以不能像分餅一樣相加等於 1。</td>
+                            <td style="padding: 1rem;">破除了我對零和博弈的直覺迷思，讓我真正理解 Loss Function 只是評估距離的指標，沒有上限。</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- 查證與修正區塊 -->
+        <section id="verification" style="margin-top: 3rem;">
+            <h2>項目三、查證與修正</h2>
+            <div style="background: #fffbeb; border-left: 4px solid #f59e0b; padding: 1.5rem; border-radius: 8px; margin-top: 1rem;">
+                <h3 style="margin-top: 0; color: #b45309;">🔍 查證主題：GAN 完美平衡時的 Loss 數值究竟是多少？</h3>
+                <ul style="color: #78350f; line-height: 1.8; margin-bottom: 0;">
+                    <li><strong>原本的理解：</strong>我原本以為既然 GAN 是零和博弈，D loss 和 G loss 就像勝率一樣，加起來應該等於 1 (100%)。如果 D loss 是 0.4，G loss 就應該是 0.6。</li>
+                    <li><strong>AI 的回答：</strong>AI 告訴我 Loss 是誤差不是機率，並提到當模型達到「納許均衡」(判別器只能瞎猜，給出 50% 機率) 時，兩者的 Loss 都會落在 \( -\ln(0.5) \approx 0.693 \) 左右。</li>
+                    <li><strong>查證過程與修正：</strong>為了確認 AI 說的是對的，我查閱了 PyTorch 中 <code>nn.BCELoss</code> 的數學定義與 Ian Goodfellow 的原論文。交叉熵的公式為 \( - (y \log(p) + (1-y) \log(1-p)) \)。當判別器完全混淆給出 \( p = 0.5 \) 時，代入公式確實會得到 \( -\ln(0.5) \)，這在自然對數下約等於 0.693。因此確認 AI 的解釋完全正確，我也成功修正了自己把 Loss 當作機率相加的嚴重觀念錯誤。</li>
+                </ul>
+            </div>
+        </section>
+
         <!-- 實作區塊 -->
-        <section id="implementation">
-            <h2>2. 實作範例：條件式 GAN (cGAN)</h2>
+        <section id="implementation" style="margin-top: 3rem;">
+            <h2>實作範例：條件式 GAN (cGAN)</h2>
             <pre><code class="language-python">import torch
 import torch.nn as nn
 
@@ -239,8 +286,8 @@ class Discriminator(nn.Module):
         return validity</code></pre>
         </section>
         <!-- 互動體驗區塊 (GitHub Pages 靜態版) -->
-        <section id="interactive">
-            <h2>3. 互動體驗：訓練過程與模型生成</h2>
+        <section id="interactive" style="margin-top: 3rem;">
+            <h2>項目四、視覺化說明：訓練與生成互動體驗</h2>
             
             <div style="margin-bottom: 3rem;">
                 <h3 style="color: #1e293b; border-bottom: 2px solid #e2e8f0; padding-bottom: 0.5rem; display: flex; justify-content: space-between; align-items: center;">
@@ -330,8 +377,8 @@ class Discriminator(nn.Module):
         </section>
 
         <!-- 深入分析區塊 -->
-        <section id="analysis">
-            <h2>4. 模型深入分析與商業應用</h2>
+        <section id="analysis" style="margin-top: 3rem;">
+            <h2>項目五、應用案例與未來潛力</h2>
             <p>在「AI 導論」的範疇中，生成對抗網路 (GAN) 無疑是近年來最具突破性的技術之一。以下針對 GAN 模型進行優劣勢評估與產業應用分析：</p>
             
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1.5rem;" class="architecture-grid">
@@ -374,6 +421,18 @@ class Discriminator(nn.Module):
                     <strong style="color: #0f172a; font-size: 1.1rem;">4. 數位孿生與影音修復</strong><br>
                     <span style="color: #475569;">將黑白老電影自動上色、修復受損影片，甚至是深度偽造 (Deepfake) 技術的基礎。許多新聞台與企業也開始利用 GAN 生成虛擬主播或名人的數位替身，進行 24 小時無間斷的影音播報。</span>
                 </div>
+            </div>
+        </section>
+
+        <!-- 學習反思區塊 -->
+        <section id="reflection" style="margin-top: 3rem; margin-bottom: 2rem;">
+            <h2>項目六、學習反思</h2>
+            <div style="background: #fdf2f8; border-left: 4px solid #db2777; padding: 1.5rem; border-radius: 8px;">
+                <ul style="color: #831843; line-height: 1.8; margin-bottom: 0;">
+                    <li><strong>AI 對學習的幫助：</strong>在實作這次期末專案時，AI 不僅幫我把艱澀的數學公式（Min-Max Game）轉化為白話文，更協助我利用前端 Canvas 技術，將原本只能在終端機裡看的訓練過程，變成可以讓使用者直接互動、動態呈現的網頁，大幅提升了專案的完整度。</li>
+                    <li><strong>AI 回答的限制與缺點：</strong>雖然 AI 能快速產出程式碼，但有時候會出現「排版跑掉」的問題（例如它曾經在修改網頁時多加了一個 <code>&lt;/div&gt;</code> 標籤，導致整個版面破掉）。這讓我知道不能完全盲目依賴 AI，自己還是必須具備除錯（Debug）以及閱讀 HTML 架構的基本能力，才能和 AI 互相配合。</li>
+                    <li><strong>最後真正學會了什麼：</strong>透過這次不斷與 AI 討論，我不但釐清了 GAN 的「零和對抗」機制，還搞懂了 Loss 函數原來代表的是誤差而不是機率。更重要的是，我學會了如何把一個機器學習模型從後端的 Python 腳本，結合前端視覺化包裝成一個完整的網頁展示應用。</li>
+                </ul>
             </div>
         </section>
     </div>
