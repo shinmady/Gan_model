@@ -534,34 +534,6 @@ class Discriminator(nn.Module):
 
                 </div>
 
-
-
-                <!-- 加入小知識區塊 -->
-
-                <div style="margin-top: 1.5rem; background: #f0fdf4; border-left: 4px solid #22c55e; padding: 1.5rem; border-radius: 8px;">
-
-                    <h4 style="margin-top: 0; color: #166534; display: flex; align-items: center; gap: 0.5rem;">
-
-                        💡 小知識：為什麼 D Loss 和 G Loss 加起來不等於 1？
-
-                    </h4>
-
-                    <p style="color: #15803d; font-size: 0.95rem; margin-bottom: 0.5rem;">
-
-                        其實它們是<strong>二元交叉熵 (Binary Cross Entropy) 算出來的「誤差」</strong>，並不是機率，而且：
-
-                    </p>
-
-                    <ul style="color: #15803d; font-size: 0.95rem; margin-bottom: 0; padding-left: 1.2rem; line-height: 1.6;">
-
-                        <li><strong>目標不同：</strong>判別器 (D) 同時要學著分辨真圖和假圖；生成器 (G) 只有一個目標，就是想辦法騙過 D。兩者算的基準並不對稱。</li>
-
-                        <li><strong>完美的平衡點 (納許均衡)：</strong>當 G 生成的假圖逼真到讓 D 完全猜不出來 (只能給出 50% 機率瞎猜) 時，將 0.5 代入交叉熵公式，兩者的 Loss 其實都會落在 <strong>\(-\ln(0.5) \approx 0.693\)</strong> 左右。</li>
-
-                    </ul>
-
-                </div>
-
             </div>
 
 
