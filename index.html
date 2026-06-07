@@ -350,8 +350,8 @@ class Discriminator(nn.Module):
                     <h3 style="margin-top: 0; color: #1e293b;">⚠️ 劣勢與挑戰 (Challenges)</h3>
                     <ul style="padding-left: 1.2rem; color: #475569; margin-bottom: 0;">
                         <li><strong>訓練極度不穩定：</strong>生成器與判別器必須保持動態平衡。如果判別器太強，生成器無法學習；反之亦然。容易發生「梯度消失」無法收斂。</li>
-                        <li><strong>模式崩潰 (Mode Collapse)：</strong>模型可能會「偷懶」，發現生成某幾張特定的圖片最容易騙過判別器，導致生成的結果缺乏多樣性 (只會畫同一種貓)。</li>
-                        <li><strong>評估困難：</strong>目前沒有一個絕對客觀且完美的數學指標，能準確評估生成的圖片到底有多「真實」。</li>
+                        <li><strong>模式崩潰 (Mode Collapse)：</strong>模型可能會偷懶，發現生成某幾張特定的圖片最容易騙過判別器，導致生成的結果缺乏多樣性 (只會畫同一種圖)。</li>
+                        <li><strong>評估困難：</strong>目前沒有一個絕對客觀且完美的數學指標，能準確評估生成的圖片到底有多真實。</li>
                     </ul>
                 </div>
             </div>
@@ -362,7 +362,7 @@ class Discriminator(nn.Module):
             <div style="display: flex; flex-direction: column; gap: 1rem;">
                 <div style="background: #f1f5f9; padding: 1rem; border-radius: 8px; border-left: 4px solid #8b5cf6;">
                     <strong style="color: #0f172a; font-size: 1.1rem;">1. 醫療影像擴增與隱私保護</strong><br>
-                    <span style="color: #475569;">在醫療領域，罕見疾病的真實影像極度缺乏。GAN 可以用來生成高品質的合成病理切片或 X 光片，幫助訓練更準確的 AI 診斷模型；同時因為是「生成」的圖片，也完美避開了真實病患的隱私與個資問題。</span>
+                    <span style="color: #475569;">在醫療領域，罕見疾病的真實影像極度缺乏。GAN 可以用來生成高品質的合成病理切片或 X 光片，幫助訓練更準確的 AI 診斷模型。同時因為是生成的圖片，也完美避開了真實病患的隱私與個資問題。</span>
                 </div>
                 <div style="background: #f1f5f9; padding: 1rem; border-radius: 8px; border-left: 4px solid #f59e0b;">
                     <strong style="color: #0f172a; font-size: 1.1rem;">2. 電商虛擬試穿與商品生成</strong><br>
