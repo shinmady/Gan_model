@@ -1,196 +1,400 @@
 <!DOCTYPE html>
+
 <html lang="zh-TW">
+
 <head>
+
     <meta charset="UTF-8">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>111316007鄭聿宸Gan_Model</title>
+
     <!-- 引入 Google 字體 -->
+
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700&family=Fira+Code:wght@400;600&display=swap" rel="stylesheet">
+
     <!-- 引入 Prism.js 程式碼高亮 CSS -->
+
     <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+
     
+
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
     
+
     <style>
+
         :root {
+
             --primary: #2563eb;
+
             --bg-color: #f8fafc;
+
             --text-main: #1e293b;
+
             --text-muted: #64748b;
+
         }
+
         body {
+
             font-family: 'Noto Sans TC', sans-serif;
+
             background-color: var(--bg-color);
+
             color: var(--text-main);
+
             line-height: 1.7;
+
             margin: 0;
+
             padding: 0;
+
         }
+
         header {
+
             background-color: #1e293b;
+
             color: white;
+
             padding: 4rem 2rem;
+
             text-align: center;
+
         }
+
         header h1 { margin: 0 0 1rem 0; font-size: 2.5rem; }
+
         .container {
+
             max-width: 900px;
+
             margin: 0 auto;
+
             padding: 2rem;
+
         }
+
         section {
+
             background: white;
+
             padding: 2.5rem;
+
             border-radius: 12px;
+
             box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+
             margin-bottom: 2rem;
+
         }
+
         h2 {
+
             color: var(--primary);
+
             border-bottom: 2px solid #e2e8f0;
+
             padding-bottom: 0.5rem;
+
             margin-top: 0;
+
         }
+
         .architecture-grid {
+
             display: grid;
+
             grid-template-columns: 1fr 1fr;
+
             gap: 2rem;
+
             margin-top: 1.5rem;
+
         }
+
         .card {
+
             background: var(--bg-color);
+
             padding: 1.5rem;
+
             border-radius: 8px;
+
             border-left: 4px solid var(--primary);
+
         }
+
         /* 針對程式碼區塊微調 */
+
         pre { border-radius: 8px; }
+
         code { font-family: 'Fira Code', monospace; }
+
         
+
         /* 互動區塊樣式 */
+
         .interactive-panel {
+
             display: flex;
+
             gap: 2rem;
+
             margin-top: 1.5rem;
+
             background: var(--bg-color);
+
             padding: 1.5rem;
+
             border-radius: 8px;
+
             align-items: center;
+
         }
+
         .controls {
+
             flex: 1;
+
         }
+
         .btn {
+
             background-color: var(--primary);
+
             color: white;
+
             border: none;
+
             padding: 0.75rem 1.5rem;
+
             font-size: 1rem;
+
             border-radius: 6px;
+
             cursor: pointer;
+
             transition: background-color 0.3s;
+
         }
+
         .btn:hover {
+
             background-color: #1d4ed8;
+
         }
+
         .btn:disabled {
+
             background-color: #94a3b8;
+
             cursor: not-allowed;
+
         }
+
         .metrics p {
+
             margin: 0.5rem 0;
+
             font-family: 'Fira Code', monospace;
+
             font-size: 0.9rem;
+
         }
+
         .visualization {
+
             flex: 1;
+
             display: flex;
+
             justify-content: center;
+
         }
+
         .canvas-container {
+
             text-align: center;
+
         }
+
         canvas {
+
             border: 2px dashed #cbd5e1;
+
             border-radius: 8px;
+
             background-color: #fff;
+
         }
+
         
+
         @media (max-width: 768px) {
+
             .architecture-grid { grid-template-columns: 1fr; }
+
             .interactive-panel { flex-direction: column; }
+
         }
+
     </style>
+
 </head>
+
 <body>
 
+
+
     <header>
+
         <h1>111316007鄭聿宸Gan_Model</h1>
+
         <p>Generative Adversarial Network 介紹</p>
+
     </header>
 
+
+
     <div class="container">
+
+        <!-- 導覽列 -->
+
+        <nav style="background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); margin-bottom: 2rem; display: flex; justify-content: center; gap: 1.5rem; flex-wrap: wrap; position: sticky; top: 0; z-index: 100;">
+            <a href="#intro" style="color: #2563eb; text-decoration: none; font-weight: bold; padding: 0.5rem 1rem; border-radius: 4px; transition: background-color 0.2s;">1.介紹</a>
+            <a href="#ai-learning" style="color: #2563eb; text-decoration: none; font-weight: bold; padding: 0.5rem 1rem; border-radius: 4px; transition: background-color 0.2s;">2.AI輔助</a>
+            <a href="#verification" style="color: #2563eb; text-decoration: none; font-weight: bold; padding: 0.5rem 1rem; border-radius: 4px; transition: background-color 0.2s;">3.查證</a>
+            <a href="#interactive" style="color: #2563eb; text-decoration: none; font-weight: bold; padding: 0.5rem 1rem; border-radius: 4px; transition: background-color 0.2s;">4.實作與視覺化</a>
+            <a href="#analysis" style="color: #2563eb; text-decoration: none; font-weight: bold; padding: 0.5rem 1rem; border-radius: 4px; transition: background-color 0.2s;">5.應用</a>
+            <a href="#reflection" style="color: #2563eb; text-decoration: none; font-weight: bold; padding: 0.5rem 1rem; border-radius: 4px; transition: background-color 0.2s;">6.學習反思</a>
+            <style>nav a:hover { background-color: #f1f5f9; }</style>
+        </nav>
+
+
+
         <!-- 簡介區塊 -->
+
         <section id="intro">
-            <h2>項目一、演算法介紹 (什麼是 GAN？)</h2>
+
+            <h2>一、演算法介紹 (什麼是 GAN？)</h2>
+
             <p>生成對抗網路（GAN）由 Ian Goodfellow 於 2014 年提出。<strong>它主要為了解決「資料不足」或「缺乏創造力」的問題</strong>，能夠從無到有生成極度逼真的影像、聲音或文字。它的核心思想是讓生成器與判別器進行零和博弈，在不斷對抗的過程中共同進化，最終讓 AI 學會生成逼真的數據。</p>
+
             
+
             <div class="architecture-grid">
+
                 <div class="card" style="border-left-color: #ef4444;">
+
                     <h3>生成器 (Generator, \(G\))</h3>
+
                     <p><strong>輸入：</strong> 隨機雜訊向量 \(z\)<br>
+
                     <strong>輸出：</strong> 生成的假數據 \(G(z)\)<br>
+
                     <strong>目標：</strong> 極力模仿真實數據的分佈，努力產出能讓判別器誤以為是真實數據的假圖，希望極小化判別器辨識出假圖的機率</p>
+
                 </div>
+
                 <div class="card" style="border-left-color: #22c55e;">
+
                     <h3>判別器 (Discriminator, \(D\))</h3>
+
                     <p><strong>輸入：</strong> 真實數據 \(x\) 或假數據 \(G(z)\)<br>
+
                     <strong>輸出：</strong> 一個 0 到 1 之間的機率值（1代表真，0代表假）<br>
+
                     <strong>目標：</strong> 盡可能準確地區分真實數據和生成器產生的假數據，希望極大化自己的判別準確率</p>
+
                 </div>
+
             </div>
+
             
+
             <div style="margin-top: 2rem; background: #f8fafc; padding: 1.5rem; border-radius: 8px; border: 1px solid #e2e8f0;">
+
                 <h3 style="margin-top: 0; color: #1e293b;">📐 數學原理：Min-Max Game (極小極大化博弈)</h3>
+
                 <p>GAN 的訓練過程可以用一個目標函數 \(V(D, G)\) 來表示，這是一個 Binary Cross Entropy (二元交叉熵) 的變體：</p>
+
                 <div style="background: #ffffff; padding: 1rem; border-radius: 6px; text-align: center; font-size: 1.1rem; overflow-x: auto; box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);">
+
                     \[ \min_G \max_D V(D, G) = \mathbb{E}_{x \sim p_{data}(x)}[\log D(x)] + \mathbb{E}_{z \sim p_z(z)}[\log(1 - D(G(z)))] \]
+
                 </div>
+
                 <ul style="color: #475569; margin-bottom: 0; padding-left: 1.2rem; line-height: 1.8;">
+
                     <li><strong>判別器 \(D\) 的視角 (\(\max_D\))：</strong> 努力讓公式的值最大化。對於真實數據 \(x\)，希望 \(D(x)\) 越接近 1 越好（此時 \(\log(1)=0\) 最大）；對於假數據 \(G(z)\)，希望 \(D(G(z))\) 越接近 0 越好（此時 \(\log(1-0)=0\) 最大）。</li>
+
                     <li><strong>生成器 \(G\) 的視角 (\(\min_G\))：</strong> 努力讓公式的值最小化。因為它控制不了真實資料項，它只能想辦法讓自己生成的假數據 \(G(z)\) 騙過判別器，也就是希望 \(D(G(z))\) 越接近 1 越好（此時 \(\log(1-1) \to -\infty\)，達到極小值）。</li>
+
                 </ul>
+
             </div>
+
         </section>
 
+
+
         <!-- AI 輔助學習紀錄區塊 -->
+
         <section id="ai-learning" style="margin-top: 3rem;">
+
             <h2>項目二、AI 輔助學習紀錄</h2>
+
             <p>在實作本專案的過程中，我利用了 AI 助手來協助釐清艱澀的演算法概念，並指導我如何將 Python 模型轉換為網頁視覺化。</p>
+
             <div style="overflow-x: auto;">
+
                 <table style="width: 100%; border-collapse: collapse; margin-top: 1rem; background: white; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); border-radius: 8px; overflow: hidden;">
+
                     <thead style="background: #1e293b; color: white;">
+
                         <tr>
-                            <th style="padding: 1rem; text-align: left;">我問了 AI 什麼問題</th>
+
+                            <th style="padding: 1rem; text-align: left;">問題</th>
+
                             <th style="padding: 1rem; text-align: left;">AI 回答重點摘要</th>
+
                             <th style="padding: 1rem; text-align: left;">如何幫助我理解</th>
+
                         </tr>
+
                     </thead>
+
                     <tbody>
+
                         <tr style="border-bottom: 1px solid #e2e8f0;">
+
                             <td style="padding: 1rem;">為什麼生成器一開始必須輸入「隨機雜訊」，而不是空白圖片？</td>
-                            <td style="padding: 1rem;">AI 解釋如果輸入固定圖片，生成器只會產出單一結果。隨機雜訊（Latent Vector）能提供「多樣性」，讓模型學習將不同的雜訊映射成具有不同特徵（如筆跡、粗細）的數字。</td>
-                            <td style="padding: 1rem;">解開了對「無中生有」的疑惑，原來雜訊就像靈感種子，是確保模型能生成多樣化、不重複結果的關鍵。</td>
+
+                            <td style="padding: 1rem;">如果輸入固定圖片，生成器只會產出單一結果。隨機雜訊能提供多樣性，讓模型學習將不同的雜訊映射成具有不同特徵（如筆跡、粗細）的數字</td>
+
+                            <td style="padding: 1rem;">解開了對無中生有的疑惑，雜訊是確保模型能生成多樣化、不重複結果的關鍵</td>
+
                         </tr>
+
                         <tr style="border-bottom: 1px solid #e2e8f0;">
+
                             <td style="padding: 1rem;">判別器到底是如何判斷一張圖片是真是假？</td>
-                            <td style="padding: 1rem;">AI 說明判別器本質上是一個二元分類器，它會分析圖片的紋理、邊緣等特徵，藉由同時觀察真圖與假圖，不斷修正神經網路權重來找出兩者在像素特徵上的差異。</td>
-                            <td style="padding: 1rem;">讓我了解判別器並不是單純死背整張圖片的樣子，而是像鑑識專家一樣，學習辨識細微的高維度特徵。</td>
+
+                            <td style="padding: 1rem;">判別器本質上是一個二元分類器，它會分析圖片的紋理、邊緣等特徵，藉由同時觀察真圖與假圖，不斷修正神經網路權重來找出兩者在像素特徵上的差異</td>
+
+                            <td style="padding: 1rem;">讓我了解判別器並不是單純死背整張圖片的樣子，而是學習辨識細微的高維度特徵</td>
+
                         </tr>
+
                         <tr>
+
                             <td style="padding: 1rem;">為什麼訓練時 D loss 和 G loss 加起來不等於 1？</td>
-                            <td style="padding: 1rem;">AI 解釋這兩個數值是「二元交叉熵誤差(BCE Loss)」，不是機率。因為 G 和 D 的「考試題目」和基準點不同，所以不能像分餅一樣相加等於 1。</td>
-                            <td style="padding: 1rem;">破除了我對零和博弈的直覺迷思，讓我真正理解 Loss Function 只是評估距離的指標，沒有上限。</td>
+                            <td style="padding: 1rem;">AI 解釋它們不是機率相加，而是分別透過交叉熵計算出的誤差值。兩者目標不同，只有在達到納許均衡時，Loss 皆會收斂在特定的數值 (-ln(0.5) 約等於 0.693)。</td>
+                            <td style="padding: 1rem;">讓我釐清了 GAN 訓練時評估指標的真正意義，不再誤以為兩者是零和機率。</td>
                         </tr>
                     </tbody>
                 </table>
@@ -200,20 +404,24 @@
         <!-- 查證與修正區塊 -->
         <section id="verification" style="margin-top: 3rem;">
             <h2>項目三、查證與修正</h2>
-            <div style="background: #fffbeb; border-left: 4px solid #f59e0b; padding: 1.5rem; border-radius: 8px; margin-top: 1rem;">
-                <h3 style="margin-top: 0; color: #b45309;">🔍 查證主題：GAN 完美平衡時的 Loss 數值究竟是多少？</h3>
-                <ul style="color: #78350f; line-height: 1.8; margin-bottom: 0;">
-                    <li><strong>原本的理解：</strong>我原本以為既然 GAN 是零和博弈，D loss 和 G loss 就像勝率一樣，加起來應該等於 1 (100%)。如果 D loss 是 0.4，G loss 就應該是 0.6。</li>
-                    <li><strong>AI 的回答：</strong>AI 告訴我 Loss 是誤差不是機率，並提到當模型達到「納許均衡」(判別器只能瞎猜，給出 50% 機率) 時，兩者的 Loss 都會落在 \( -\ln(0.5) \approx 0.693 \) 左右。</li>
-                    <li><strong>查證過程與修正：</strong>為了確認 AI 說的是對的，我查閱了 PyTorch 中 <code>nn.BCELoss</code> 的數學定義與 Ian Goodfellow 的原論文。交叉熵的公式為 \( - (y \log(p) + (1-y) \log(1-p)) \)。當判別器完全混淆給出 \( p = 0.5 \) 時，代入公式確實會得到 \( -\ln(0.5) \)，這在自然對數下約等於 0.693。因此確認 AI 的解釋完全正確，我也成功修正了自己把 Loss 當作機率相加的嚴重觀念錯誤。</li>
+            <div style="background: #f8fafc; padding: 1.5rem; border-radius: 8px; border-left: 4px solid #f59e0b;">
+                <h3 style="margin-top: 0; color: #1e293b;">🔍 AI 生成內容的查證過程</h3>
+                <p>在學習過程中，我發現 AI 提供的一些資訊需要進一步查證與修正：</p>
+                <ul style="color: #475569; line-height: 1.8;">
+                    <li><strong>Loss 函數的解釋：</strong>最初 AI 簡單地說「D loss 是判別真假的誤差，G loss 是欺騙的誤差」，但這過於簡化。我查閱了 Ian Goodfellow 的原始論文與 PyTorch 官方文件，才確認這是基於 Binary Cross Entropy 計算的結果，並修正了網頁中關於 Loss 的小知識說明。</li>
+                    <li><strong>程式碼的維度問題：</strong>AI 給的 cGAN 核心架構中，將圖片攤平與還原的 <code>view</code> 函式維度有時寫死為特定批次大小。我將其修正為 <code>img.view(img.size(0), -1)</code> 與 <code>img.view(img.size(0), 1, 28, 28)</code>，以支援動態批次訓練。</li>
+                    <li><strong>資源消耗的提醒：</strong>AI 較少主動提醒 GAN 訓練對於運算資源的巨大消耗。實際測試後我發現原本的參數會導致網頁卡頓，因此我調整了視覺化腳本中的動畫頻率與取樣數，確保互動體驗的流暢。</li>
                 </ul>
             </div>
         </section>
 
-        <!-- 實作區塊 -->
-        <section id="implementation" style="margin-top: 3rem;">
-            <h2>實作範例：條件式 GAN (cGAN)</h2>
-            <pre><code class="language-python">import torch
+        <!-- 互動體驗區塊 -->
+        <section id="interactive" style="margin-top: 3rem;">
+            <h2>項目四、實作範例與視覺化說明</h2>
+            
+            <div style="margin-bottom: 3rem;">
+                <h3 style="color: #1e293b; border-bottom: 2px solid #e2e8f0; padding-bottom: 0.5rem;">4.0 實作範例：條件式 GAN (cGAN) 核心架構</h3>
+                <pre><code class="language-python">import torch
 import torch.nn as nn
 
 # ==========================================
@@ -284,384 +492,749 @@ class Discriminator(nn.Module):
         # 4. 判斷這張圖片在該標籤下的真實機率
         validity = self.model(x)
         return validity</code></pre>
-        </section>
-        <!-- 互動體驗區塊 (GitHub Pages 靜態版) -->
-        <section id="interactive" style="margin-top: 3rem;">
-            <h2>項目四、視覺化說明：訓練與生成互動體驗</h2>
+            </div>
             
             <div style="margin-bottom: 3rem;">
                 <h3 style="color: #1e293b; border-bottom: 2px solid #e2e8f0; padding-bottom: 0.5rem; display: flex; justify-content: space-between; align-items: center;">
-                    <span>3.1 模擬訓練過程</span>
+                    <span>4.1 模擬訓練過程</span>
+
                     <span id="trainingEpochBadge" style="background: #2563eb; color: white; padding: 0.2rem 0.8rem; border-radius: 999px; font-size: 0.9rem; display: none;">Epoch: 0/10</span>
+
                 </h3>
+
                 <p>觀察 GAN 在訓練時，生成器與判別器損失值 (Loss) 的動態對抗過程</p>
+
                 <p>當兩者的 Loss 逐漸收斂與平衡，代表模型開始掌握數據特徵</p>
+
                 <div class="interactive-panel" style="flex-direction: column; align-items: stretch;">
+
                     <div style="display: flex; gap: 1rem; align-items: center; margin-bottom: 0.5rem; flex-wrap: wrap;">
+
                         <button id="startTrainingBtn" class="btn" style="background-color: #f59e0b;">▶ 開始模擬訓練</button>
+
                         <div class="progress-bar-container" style="flex: 1; min-width: 200px; height: 12px; background-color: #cbd5e1; border-radius: 6px; overflow: hidden;">
+
                             <div id="trainingProgress" style="width: 0%; height: 100%; background-color: #10b981; transition: width 0.1s;"></div>
+
                         </div>
+
                         <span id="trainingStatusText" style="font-family: 'Fira Code', monospace; font-size: 0.9rem; min-width: 120px; text-align: right;">等待開始...</span>
+
                     </div>
+
                     
+
                     <div class="terminal" style="background-color: #0f172a; color: #4ade80; padding: 1rem; border-radius: 8px; font-family: 'Fira Code', monospace; height: 250px; overflow-y: auto; font-size: 0.85rem; line-height: 1.6; box-shadow: inset 0 2px 4px rgba(0,0,0,0.3);">
+
                         <div id="terminalOutput" style="white-space: pre-wrap;">>> 準備載入 MNIST 資料集...
+
 >> 等待使用者啟動訓練程序...</div>
+
                     </div>
+
                 </div>
+
+
 
                 <!-- 加入小知識區塊 -->
+
                 <div style="margin-top: 1.5rem; background: #f0fdf4; border-left: 4px solid #22c55e; padding: 1.5rem; border-radius: 8px;">
+
                     <h4 style="margin-top: 0; color: #166534; display: flex; align-items: center; gap: 0.5rem;">
+
                         💡 小知識：為什麼 D Loss 和 G Loss 加起來不等於 1？
+
                     </h4>
+
                     <p style="color: #15803d; font-size: 0.95rem; margin-bottom: 0.5rem;">
+
                         其實它們是<strong>二元交叉熵 (Binary Cross Entropy) 算出來的「誤差」</strong>，並不是機率，而且：
+
                     </p>
+
                     <ul style="color: #15803d; font-size: 0.95rem; margin-bottom: 0; padding-left: 1.2rem; line-height: 1.6;">
+
                         <li><strong>目標不同：</strong>判別器 (D) 同時要學著分辨真圖和假圖；生成器 (G) 只有一個目標，就是想辦法騙過 D。兩者算的基準並不對稱。</li>
+
                         <li><strong>完美的平衡點 (納許均衡)：</strong>當 G 生成的假圖逼真到讓 D 完全猜不出來 (只能給出 50% 機率瞎猜) 時，將 0.5 代入交叉熵公式，兩者的 Loss 其實都會落在 <strong>\(-\ln(0.5) \approx 0.693\)</strong> 左右。</li>
+
                     </ul>
+
                 </div>
+
             </div>
+
+
 
             <div>
-                <h3 style="color: #1e293b; border-bottom: 2px solid #e2e8f0; padding-bottom: 0.5rem;">3.2 cGAN 模型生成與訓練集比對</h3>
+
+                <h3 style="color: #1e293b; border-bottom: 2px solid #e2e8f0; padding-bottom: 0.5rem;">4.2 cGAN 模型生成與訓練集比對</h3>
+
                 <p>請從下拉選單中選擇一個數字 (0-9)，並點擊開始生成</p>
+
                 <p>您也可以點擊查看真實訓練資料來比對兩者的差異</p>
+
+                <p>(註:以上結果皆為先在本地端運算完成，網頁僅呈現結果)</p>
+
             
+
             <div class="interactive-panel">
+
                 <div class="controls">
+
                     <label for="digitSelect" style="font-weight: bold; margin-bottom: 0.5rem; display: block;">選擇要生成的數字：</label>
+
                     <select id="digitSelect" style="padding: 0.5rem; font-size: 1rem; border-radius: 4px; border: 1px solid #cbd5e1; width: 100%; margin-bottom: 1rem;">
+
                         <option value="0">0</option>
+
                         <option value="1">1</option>
+
                         <option value="2">2</option>
+
                         <option value="3">3</option>
+
                         <option value="4">4</option>
+
                         <option value="5">5</option>
+
                         <option value="6">6</option>
+
                         <option value="7">7</option>
+
                         <option value="8">8</option>
+
                         <option value="9">9</option>
+
                     </select>
+
                     
+
                     <button id="generateBtn" class="btn" style="width: 100%; margin-bottom: 0.5rem;">✨ 開始生成</button>
+
                     <button id="showRealBtn" class="btn" style="width: 100%; background-color: #10b981;">🔍 查看真實訓練資料 (MNIST)</button>
+
                     <div id="statusMessage" style="margin-top: 1rem; font-size: 0.9rem; color: #64748b;"></div>
+
                 </div>
+
                 
+
                 <div class="visualization" style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+
                     <!-- GAN 生成圖片展示區 -->
+
                     <div class="canvas-container">
+
                         <h4 style="margin-top:0; color: #2563eb;">模型生成的影像</h4>
+
                         <div style="border: 2px dashed #cbd5e1; border-radius: 8px; width: 160px; height: 160px; display: flex; align-items: center; justify-content: center; background-color: #fff; overflow: hidden; margin: 0 auto; position: relative;">
+
                             <canvas id="noiseCanvas" width="28" height="28" style="width: 100%; height: 100%; position: absolute; top: 0; left: 0; image-rendering: pixelated; display: none;"></canvas>
+
                             <img id="resultImage" src="" alt="等待生成..." style="display: none; width: 100%; height: 100%; object-fit: cover; image-rendering: pixelated; position: absolute; top: 0; left: 0; z-index: 10;" />
+
                             <span id="placeholderText" style="color: #94a3b8; font-size: 0.9rem; position: relative; z-index: 5;">等待生成...</span>
+
                         </div>
+
                     </div>
+
+
 
                     <!-- 真實圖片展示區 -->
+
                     <div class="canvas-container" id="realImageContainer" style="opacity: 0.3; transition: opacity 0.3s;">
+
                         <h4 style="margin-top:0; color: #10b981;">真實訓練集影像</h4>
+
                         <div style="border: 2px dashed #cbd5e1; border-radius: 8px; width: 160px; height: 160px; display: flex; align-items: center; justify-content: center; background-color: #fff; overflow: hidden; margin: 0 auto;">
+
                             <img id="realImage" src="" alt="等待載入..." style="display: none; width: 100%; height: 100%; object-fit: cover; image-rendering: pixelated;" />
+
                             <span id="realPlaceholderText" style="color: #94a3b8; font-size: 0.9rem;">隱藏中</span>
+
                         </div>
+
                     </div>
+
                 </div>
+
                 </div>
+
             </div>
+
         </section>
+
+
 
         <!-- 深入分析區塊 -->
+
         <section id="analysis" style="margin-top: 3rem;">
+
             <h2>項目五、應用案例與未來潛力</h2>
+
             <p>在「AI 導論」的範疇中，生成對抗網路 (GAN) 無疑是近年來最具突破性的技術之一。以下針對 GAN 模型進行優劣勢評估與產業應用分析：</p>
+
             
+
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1.5rem;" class="architecture-grid">
+
                 <div class="card" style="border-left-color: #3b82f6;">
+
                     <h3 style="margin-top: 0; color: #1e293b;">✨ 模型優勢 (Advantages)</h3>
+
                     <ul style="padding-left: 1.2rem; color: #475569; margin-bottom: 0;">
+
                         <li><strong>不需依賴複雜的數學推論：</strong>GAN 讓生成器與判別器互相對抗，直接從樣本學習資料分佈，避開了傳統繁瑣的機率計算。</li>
+
                         <li><strong>生成品質極高：</strong>與早期的生成模型 (如 VAE) 相比，GAN 生成的圖像邊緣更銳利、細節更清晰、整體更逼真。</li>
+
                         <li><strong>設計靈活度高：</strong>可以輕易擴展，例如加入條件成為 cGAN (控制生成結果)，或是 CycleGAN (不需要配對資料即可進行風格轉換)。</li>
+
                     </ul>
+
                 </div>
+
                 
+
                 <div class="card" style="border-left-color: #ef4444;">
+
                     <h3 style="margin-top: 0; color: #1e293b;">⚠️ 劣勢與挑戰 (Challenges)</h3>
+
                     <ul style="padding-left: 1.2rem; color: #475569; margin-bottom: 0;">
+
                         <li><strong>訓練極度不穩定：</strong>生成器與判別器必須保持動態平衡。如果判別器太強，生成器無法學習；反之亦然。容易發生「梯度消失」無法收斂。</li>
+
                         <li><strong>模式崩潰 (Mode Collapse)：</strong>模型可能會偷懶，發現生成某幾張特定的圖片最容易騙過判別器，導致生成的結果缺乏多樣性 (只會畫同一種圖)。</li>
+
                         <li><strong>評估困難：</strong>目前沒有一個絕對客觀且完美的數學指標，能準確評估生成的圖片到底有多真實。</li>
+
                     </ul>
+
                 </div>
+
             </div>
+
+
 
             <h3 style="color: #1e293b; border-bottom: 2px solid #e2e8f0; padding-bottom: 0.5rem; margin-top: 2rem;">🚀 未來潛力與商業應用</h3>
+
             <p>雖然近期擴散模型 (Diffusion Models, 如 Midjourney, Stable Diffusion) 佔據了文字生圖的熱門版面，但在許多即時運算與特定領域中，GAN 依然具有無可取代的商業價值：</p>
+
             
+
             <div style="display: flex; flex-direction: column; gap: 1rem;">
+
                 <div style="background: #f1f5f9; padding: 1rem; border-radius: 8px; border-left: 4px solid #8b5cf6;">
+
                     <strong style="color: #0f172a; font-size: 1.1rem;">1. 醫療影像擴增與隱私保護</strong><br>
+
                     <span style="color: #475569;">在醫療領域，罕見疾病的真實影像極度缺乏。GAN 可以用來生成高品質的合成病理切片或 X 光片，幫助訓練更準確的 AI 診斷模型。同時因為是生成的圖片，也完美避開了真實病患的隱私與個資問題。</span>
+
                 </div>
+
                 <div style="background: #f1f5f9; padding: 1rem; border-radius: 8px; border-left: 4px solid #f59e0b;">
+
                     <strong style="color: #0f172a; font-size: 1.1rem;">2. 電商虛擬試穿與商品生成</strong><br>
+
                     <span style="color: #475569;">服飾品牌可利用 Image-to-Image GAN 進行虛擬模特兒換衣，或是讓設計師只要畫出衣服草圖，就能一鍵生成真實材質的商品照片，大幅降低商業拍攝與設計打樣的成本。</span>
+
                 </div>
+
                 <div style="background: #f1f5f9; padding: 1rem; border-radius: 8px; border-left: 4px solid #10b981;">
+
                     <strong style="color: #0f172a; font-size: 1.1rem;">3. 遊戲與電影產業素材生成</strong><br>
+
                     <span style="color: #475569;">開發團隊可利用 GAN 將低畫質的老舊材質「超解析化 (Super Resolution)」，或是快速生成無數種不同的 NPC 臉孔、地貌與環境貼圖。GAN 生成速度極快，非常適合遊戲內的即時運算。</span>
+
                 </div>
+
                 <div style="background: #f1f5f9; padding: 1rem; border-radius: 8px; border-left: 4px solid #ec4899;">
+
                     <strong style="color: #0f172a; font-size: 1.1rem;">4. 數位孿生與影音修復</strong><br>
+
                     <span style="color: #475569;">將黑白老電影自動上色、修復受損影片，甚至是深度偽造 (Deepfake) 技術的基礎。許多新聞台與企業也開始利用 GAN 生成虛擬主播或名人的數位替身，進行 24 小時無間斷的影音播報。</span>
+
                 </div>
+
             </div>
+
         </section>
 
+
+
         <!-- 學習反思區塊 -->
+
         <section id="reflection" style="margin-top: 3rem; margin-bottom: 2rem;">
+
             <h2>項目六、學習反思</h2>
             <div style="background: #fdf2f8; border-left: 4px solid #db2777; padding: 1.5rem; border-radius: 8px;">
                 <ul style="color: #831843; line-height: 1.8; margin-bottom: 0;">
                     <li><strong>AI 對學習的幫助：</strong>在實作這次期末專案時，AI 不僅幫我把艱澀的數學公式（Min-Max Game）轉化為白話文，更協助我利用前端 Canvas 技術，將原本只能在終端機裡看的訓練過程，變成可以讓使用者直接互動、動態呈現的網頁，大幅提升了專案的完整度。</li>
-                    <li><strong>AI 回答的限制與缺點：</strong>雖然 AI 能快速產出程式碼，但有時候會出現「排版跑掉」的問題（例如它曾經在修改網頁時多加了一個 <code>&lt;/div&gt;</code> 標籤，導致整個版面破掉）。這讓我知道不能完全盲目依賴 AI，自己還是必須具備除錯（Debug）以及閱讀 HTML 架構的基本能力，才能和 AI 互相配合。</li>
-                    <li><strong>最後真正學會了什麼：</strong>透過這次不斷與 AI 討論，我不但釐清了 GAN 的「零和對抗」機制，還搞懂了 Loss 函數原來代表的是誤差而不是機率。更重要的是，我學會了如何把一個機器學習模型從後端的 Python 腳本，結合前端視覺化包裝成一個完整的網頁展示應用。</li>
+                    <li style="margin-top: 1rem;"><strong>反思 AI 回答的限制與缺點：</strong>AI 為了讓回答淺顯易懂，常用許多簡化與比喻，但這同時會把一些關鍵資訊給過濾掉</li>
+                    <li style="margin-top: 1rem;"><strong>總結學會的內容：</strong>在理論層次，我不再只是死背生成器與判別器的對抗，而是深入探討了背後的數學根基：從二元交叉熵到納許均衡，徹底理解了模型在多維度空間中如何尋找最佳解。在實作層次，我掌握了條件式 GAN (cGAN) 的核心架構，理解如何透過 <code>nn.Embedding</code> 將抽象的標籤轉換為特徵向量，讓模型能夠聽懂指令生成特定數字。這不僅拓展了我的技術視野，也讓我更有自信面對未來複雜的 AI 變化與應用開發。</li>
                 </ul>
             </div>
-        </section>
+</section>
+
     </div>
 
+
+
     <!-- 引入 Prism.js 程式碼高亮 JS -->
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+
     
+
     <script>
+
         // --- 模擬訓練過程邏輯 ---
+
         const startTrainingBtn = document.getElementById('startTrainingBtn');
+
         const trainingProgress = document.getElementById('trainingProgress');
+
         const trainingStatusText = document.getElementById('trainingStatusText');
+
         const terminalOutput = document.getElementById('terminalOutput');
+
         const trainingEpochBadge = document.getElementById('trainingEpochBadge');
+
+
 
         let isTraining = false;
 
+
+
         startTrainingBtn.addEventListener('click', () => {
+
             if (isTraining) return;
+
             isTraining = true;
+
             startTrainingBtn.disabled = true;
+
             startTrainingBtn.style.backgroundColor = '#94a3b8';
+
             trainingEpochBadge.style.display = 'block';
+
             
+
             terminalOutput.innerHTML = '>> 載入 MNIST 資料集成功！<br>>> 初始化 Generator 與 Discriminator 模型...<br>>> 開始訓練...<br><br>';
+
             
+
             const totalEpochs = 10;
+
             const batchesPerEpoch = 938;
+
             let currentEpoch = 0;
+
             let currentBatch = 0;
+
             
+
             // 隨機產生逼真的 Loss 變化 (D loss 趨近 0.5~0.7, G loss 趨近 0.8~1.5)
+
             let dLoss = 0.6931;
+
             let gLoss = 0.6931;
+
             
+
             const trainInterval = setInterval(() => {
+
                 // 每次增加 Batch 數量
+
                 currentBatch += 157; // 隨機跳轉以加快模擬速度
+
                 
+
                 if (currentBatch >= batchesPerEpoch) {
+
                     currentBatch = 0;
+
                     currentEpoch++;
+
                 }
+
+
 
                 // 擾動 Loss
+
                 dLoss = Math.max(0.2, Math.min(1.5, dLoss + (Math.random() - 0.5) * 0.1));
+
                 gLoss = Math.max(0.5, Math.min(3.0, gLoss + (Math.random() - 0.5) * 0.2));
 
+
+
                 // 更新進度條
+
                 const totalProgress = ((currentEpoch * batchesPerEpoch) + currentBatch) / (totalEpochs * batchesPerEpoch);
+
                 const percentage = Math.min(100, Math.round(totalProgress * 100));
+
                 trainingProgress.style.width = `${percentage}%`;
+
                 trainingStatusText.textContent = `${percentage}% 訓練中...`;
+
                 trainingStatusText.style.color = '#1e293b';
+
                 
+
                 if (currentEpoch < totalEpochs) {
+
                     trainingEpochBadge.textContent = `Epoch: ${currentEpoch + 1}/${totalEpochs}`;
+
                     // 印出 Log
+
                     const logLine = `[Epoch ${currentEpoch}/${totalEpochs}] [Batch ${currentBatch}/${batchesPerEpoch}] [D loss: ${dLoss.toFixed(4)}] [G loss: ${gLoss.toFixed(4)}]`;
+
                     terminalOutput.innerHTML += logLine + '<br>';
+
                     terminalOutput.scrollTop = terminalOutput.scrollHeight;
+
                 } else {
+
                     clearInterval(trainInterval);
+
                     trainingProgress.style.width = '100%';
+
                     trainingStatusText.textContent = '訓練完成！';
+
                     trainingStatusText.style.color = '#10b981';
+
                     trainingEpochBadge.textContent = `Epoch: 10/10`;
+
                     terminalOutput.innerHTML += '<br>>> 訓練完成！模型權重已儲存至 models/generator.pth<br>>> 現在您可以至下方「模型生成」區塊測試結果！';
+
                     terminalOutput.scrollTop = terminalOutput.scrollHeight;
+
                     
+
                     // 恢復按鈕狀態，允許重新模擬
+
                     isTraining = false;
+
                     startTrainingBtn.disabled = false;
+
                     startTrainingBtn.style.backgroundColor = '#f59e0b';
+
                     startTrainingBtn.textContent = '▶ 重新模擬訓練';
+
                 }
+
             }, 100);
+
         });
+
+
 
         // --- 互動生成圖片邏輯 ---
+
         const generateBtn = document.getElementById('generateBtn');
+
         const showRealBtn = document.getElementById('showRealBtn');
+
         const digitSelect = document.getElementById('digitSelect');
+
         
+
         const resultImage = document.getElementById('resultImage');
+
         const placeholderText = document.getElementById('placeholderText');
+
         const noiseCanvas = document.getElementById('noiseCanvas');
+
         const ctx = noiseCanvas ? noiseCanvas.getContext('2d') : null;
+
         
+
         const realImage = document.getElementById('realImage');
+
         const realPlaceholderText = document.getElementById('realPlaceholderText');
+
         const realImageContainer = document.getElementById('realImageContainer');
+
         
+
         const statusMessage = document.getElementById('statusMessage');
 
+
+
         // 每種數字我們預先生成了 10 張 (0~9)
+
         const numSamples = 10;
+
         let isGenerating = false;
 
+
+
         generateBtn.addEventListener('click', () => {
+
             if (isGenerating) return;
+
             const selectedDigit = digitSelect.value;
+
             
+
             // 隨機挑選一張預先生成的圖片
+
             const randomIndex = Math.floor(Math.random() * numSamples);
+
             const imagePath = `assets/generated/digit_${selectedDigit}_gen_${randomIndex}.png`;
+
             
+
             isGenerating = true;
+
             generateBtn.disabled = true;
+
             statusMessage.textContent = '生成中：將隨機雜訊轉換為有意義的特徵...';
+
             statusMessage.style.color = '#f59e0b';
+
             placeholderText.style.display = 'none';
+
             resultImage.style.display = 'none';
+
             noiseCanvas.style.display = 'block';
 
+
+
             // 先載入最終圖片，以便我們讀取其像素進行漸變模擬
+
             const finalImg = new Image();
+
             finalImg.src = imagePath;
+
             finalImg.onload = () => {
+
                 // 將最終圖片畫到隱藏的 canvas 上讀取像素
+
                 const hiddenCanvas = document.createElement('canvas');
+
                 hiddenCanvas.width = 28;
+
                 hiddenCanvas.height = 28;
+
                 const hCtx = hiddenCanvas.getContext('2d');
+
                 hCtx.drawImage(finalImg, 0, 0, 28, 28);
+
                 const finalImgData = hCtx.getImageData(0, 0, 28, 28).data;
 
+
+
                 // 動畫變數
+
                 const totalSteps = 30; // 漸變步數
+
                 let currentStep = 0;
+
                 
+
                 // 產生一組純隨機的初始雜訊
+
                 const initialNoise = new Uint8ClampedArray(28 * 28 * 4);
+
                 for(let i=0; i<initialNoise.length; i+=4) {
+
                     const val = Math.random() * 255;
+
                     initialNoise[i] = val;
+
                     initialNoise[i+1] = val;
+
                     initialNoise[i+2] = val;
+
                     initialNoise[i+3] = 255; // alpha
+
                 }
 
+
+
                 const animInterval = setInterval(() => {
+
                     const currentImgData = ctx.createImageData(28, 28);
+
                     
+
                     // 根據步驟計算內插權重 (從雜訊過渡到真實圖片)
+
                     // 使用 ease-in 特效讓前期像雜訊，後期快速收斂
+
                     const progress = currentStep / totalSteps;
+
                     const weight = Math.pow(progress, 2); 
 
+
+
                     for (let i = 0; i < currentImgData.data.length; i += 4) {
+
                         // 加入一些動態擾動，讓每一幀即使在漸變也有不同的雜訊感
+
                         const dynamicNoise = (Math.random() - 0.5) * 100 * (1 - progress);
+
                         
+
                         // 內插計算
+
                         const val = initialNoise[i] * (1 - weight) + finalImgData[i] * weight + dynamicNoise;
+
                         
+
                         // 確保值在 0~255 之間
+
                         const clampedVal = Math.max(0, Math.min(255, val));
 
+
+
                         currentImgData.data[i] = clampedVal;     // R
+
                         currentImgData.data[i+1] = clampedVal;   // G
+
                         currentImgData.data[i+2] = clampedVal;   // B
+
                         currentImgData.data[i+3] = 255;          // A
+
                     }
+
                     
+
                     ctx.putImageData(currentImgData, 0, 0);
+
                     currentStep++;
 
+
+
                     if (currentStep > totalSteps) {
+
                         clearInterval(animInterval);
+
                         // 動畫結束，顯示真實的最終 img 標籤 (比較清晰)，隱藏 canvas
+
                         noiseCanvas.style.display = 'none';
+
                         resultImage.src = imagePath;
+
                         resultImage.style.display = 'block';
+
                         
+
                         statusMessage.textContent = `成功生成數字 ${selectedDigit}！`;
+
                         statusMessage.style.color = '#2563eb';
+
                         
+
                         isGenerating = false;
+
                         generateBtn.disabled = false;
+
                     }
+
                 }, 50); // 每 50ms 更新一次畫面
+
             };
+
+
 
             finalImg.onerror = () => {
+
                 statusMessage.textContent = '圖片讀取失敗，請確認是否已經執行過 generate_assets.py！';
+
                 statusMessage.style.color = '#ef4444';
+
                 isGenerating = false;
+
                 generateBtn.disabled = false;
+
                 noiseCanvas.style.display = 'none';
+
             };
+
         });
+
+
 
         let isRealShowing = false;
+
         showRealBtn.addEventListener('click', () => {
+
             const selectedDigit = digitSelect.value;
+
             
+
             if (!isRealShowing) {
+
                 // 顯示真實圖片
+
                 const randomIndex = Math.floor(Math.random() * numSamples);
+
                 const imagePath = `assets/real/digit_${selectedDigit}_real_${randomIndex}.png`;
+
                 
+
                 realImage.src = imagePath;
+
                 realImage.onload = () => {
+
                     realImage.style.display = 'block';
+
                     realPlaceholderText.style.display = 'none';
+
                     realImageContainer.style.opacity = '1';
+
                     showRealBtn.textContent = '隱藏真實訓練資料';
+
                     isRealShowing = true;
+
                 };
+
             } else {
+
                 // 隱藏真實圖片
+
                 realImageContainer.style.opacity = '0.3';
+
                 realImage.style.display = 'none';
+
                 realPlaceholderText.style.display = 'block';
+
                 showRealBtn.textContent = '🔍 顯示真實訓練資料 (MNIST)';
+
                 isRealShowing = false;
+
             }
+
         });
 
+
+
         // 當切換數字時，如果真實圖片正在顯示，就自動更新
+
         digitSelect.addEventListener('change', () => {
+
             if (isRealShowing) {
+
                 const selectedDigit = digitSelect.value;
+
                 const randomIndex = Math.floor(Math.random() * numSamples);
+
                 realImage.src = `assets/real/digit_${selectedDigit}_real_${randomIndex}.png`;
+
             }
+
         });
+
     </script>
+
 </body>
+
 </html>
+
